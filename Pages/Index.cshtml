@@ -1,33 +1,59 @@
 ﻿@page
-@model IndexModel
+@model ParserModel
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "Text 2 HTML";
+}
 
-<p>Enter a customer name:</p>
+<style>
+    .sizeableTextarea {
+        background-color: AliceBlue;
+        resize: both;
+        height: 200px;
+        width: 800px;
+        overflow: scroll; 
+    }
+</style>
 
 <form method="post">
-    Name:
-    <br />
-    <input style="width: 90%" asp-for="Input" />
-    <br/>
-    @Html.EditorFor(m => m.Input, new { style = "width:500px" })
-    <br />
-
-    
-
-    <p>Here are your results: <br/></p>
-    <div style="white-space: pre-line">@Html.DisplayFor(m => m.ParsedOutput)</div>
-    
-
-    
-    <div class="multiline">
-        @Html.EditorFor(m => m.ParsedOutput)
+    <div>
+        @Html.LabelFor(m => m.Input)<br/>
+        @Html.EditorFor(m => m.Input, new { htmlAttributes = new { @class = "sizeableTextarea", @placeholder = "Raw input to be formatted for FAQ pages..." } })
     </div>
-    <style>
-        .multiline{
-            margin: 30px auto;
-            width: 90%;
-        }
-    </style>
+    <p><input type="submit" value="Parse" asp-page-handler="Parse"/></p>
+    <br />
 
-    <input type="submit" />
+
+    <div><textarea class="sizeableTextarea">@Model.ParsedOutput</textarea></div>
+    <input type="hidden" name="textValue" value="@Model.ParsedOutput" />
+    <p><input type="submit" value="Copy" asp-page-handler="CopyToClipboard"  /></p>
+    <br />
 </form>
+
+
+@* 
+    
+        <div>
+          @Html.LabelFor(m => m.ParsedOutput) <br/>
+          @Html.EditorFor(m => m.ParsedOutput, new { htmlAttributes = new { @class = "sizeableTextarea" } })
+      </div>
+      <br />
+      
+
+      <p>
+          Results: <br/>
+          @ViewData["FormattedResult"]
+      </p>
+      <p>
+          Results2: <br />
+          @Model.ParsedOutput
+      </p>
+   
+<div style="background-color: LightBlue">
+    Other stuff
+
+    <div>
+        <textarea class="sizeableTextarea" placeholder="Write a reply..."></textarea>
+    </div>
+</div>
+ *@
