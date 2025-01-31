@@ -39,14 +39,19 @@ namespace Text2Html.Pages
         [BindProperty]
         [DataType(DataType.MultilineText)]
         [Display(Name = "Raw Input to Format:")]
-        public string Input { get; set; }
+        public string? Input { get; set; }
 
-        
-        
+
+
         [BindProperty]
         [DataType(DataType.MultilineText)]
-        [Display(Name = "Parsed Output:")]
-        public string ParsedOutput { get; set; }
+        [Display(Name = "Parsed List:")]
+        public string? ParsedFaqList { get; set; }
+
+        [BindProperty]
+        [DataType(DataType.MultilineText)]
+        [Display(Name = "Parsed FAQ Text:")]
+        public string? ParsedFaqText { get; set; }
 
 
         //public ParserModel() { }
@@ -68,12 +73,12 @@ namespace Text2Html.Pages
         //{
         //    //if (!ModelState.IsValid)
         //    //{
-        //    //    ParsedOutput = "ModelState is invalid.";
+        //    //    ParsedFaqList = "ModelState is invalid.";
         //    //    return Page();
         //    //}
 
 
-        //    if (string.IsNullOrWhiteSpace(ParsedOutput))
+        //    if (string.IsNullOrWhiteSpace(ParsedFaqList))
         //        ParseModel();
         //    else
         //        CopyResultsToClipboard();
@@ -87,15 +92,18 @@ namespace Text2Html.Pages
             var results = TextParser.ParseList(Input);
             if (string.IsNullOrWhiteSpace(results?.TheList) && string.IsNullOrWhiteSpace(results?.TextSection))
             {
-                ParsedOutput = "Nothing came back. :(";
-                ViewData["FormattedResult"] = ParsedOutput;
+                ParsedFaqList = "Nothing came back. :(";
+                ParsedFaqText = null;
+                ViewData["FormattedResult"] = ParsedFaqList;
+
                 return Page();
             }
 
             var toHtml = results.TheList.Replace(Environment.NewLine, $"<br />{Environment.NewLine}");
 
-            ParsedOutput = toHtml;
-            ViewData["FormattedResult"] = ParsedOutput;
+            ParsedFaqList = results.TheList.ConvertLineFeeds();
+            ParsedFaqText = results.TextSection.ConvertLineFeeds();
+            ViewData["FormattedResult"] = ParsedFaqList;    // TODO: remove?
 
             return Page();
         }

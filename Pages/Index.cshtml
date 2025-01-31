@@ -24,9 +24,20 @@
     <br />
 
 
-    <div><textarea class="sizeableTextarea">@Model.ParsedOutput</textarea></div>
-    <input type="hidden" name="textValue" value="@Model.ParsedOutput" />
+    <div>
+        @Html.LabelFor(m => m.ParsedFaqList)<br />
+        <textarea class="sizeableTextarea">@Model.ParsedFaqList</textarea>
+    </div>
+    <input type="hidden" name="textValue" value="@Model.ParsedFaqList" />
     <p><input type="submit" value="Copy" asp-page-handler="CopyToClipboard"  /></p>
+    <br />
+
+    <div>
+        @Html.LabelFor(m => m.ParsedFaqText)<br />
+        <textarea class="sizeableTextarea">@Model.ParsedFaqText</textarea>
+    </div>
+    <input type="hidden" name="textValue" value="@Model.ParsedFaqText" />
+    <p><input type="submit" value="Copy" asp-page-handler="CopyToClipboard" /></p>
     <br />
 </form>
 
@@ -34,8 +45,8 @@
 @* 
     
         <div>
-          @Html.LabelFor(m => m.ParsedOutput) <br/>
-          @Html.EditorFor(m => m.ParsedOutput, new { htmlAttributes = new { @class = "sizeableTextarea" } })
+          @Html.LabelFor(m => m.ParsedFaqList) <br/>
+          @Html.EditorFor(m => m.ParsedFaqList, new { htmlAttributes = new { @class = "sizeableTextarea" } })
       </div>
       <br />
       
@@ -46,7 +57,7 @@
       </p>
       <p>
           Results2: <br />
-          @Model.ParsedOutput
+          @Model.ParsedFaqList
       </p>
    
 <div style="background-color: LightBlue">
