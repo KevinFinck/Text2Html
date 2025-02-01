@@ -2,7 +2,28 @@
 {
     public static class TestData
     {
-        public static string Sample1 = @"
+        public static string SimpleList { get; set; } = @"
+        1.	Why is this Notice being issued?
+        2.	What is a class action and who is involved?
+        3.	Why is this lawsuit a class action?
+        4.	What is this lawsuit about?
+        5.	Has the Court decided who is right?
+        6.	What are Plaintiffs seeking?
+        7.	Is there money available now?
+        8.	Am I part of this Class?
+        9.	What happens if I do nothing at all?
+        10.	 How do I ask to be excluded from the Class?
+        11.	 Do I have a lawyer in this lawsuit?
+        12.	 Should I hire my own lawyer?
+        13.	 How will the lawyers be paid?
+        14.	 How and when will the Court decide who is right?
+        15.	 Do I have to attend the trial?
+        16.	 Will I get money after the trial?
+        17.	 Are more details available?
+        ";
+
+ 
+        public static string JointListAndText = @"
 1. Why was the Notice issued?
 A Court authorized this website because you have a right to know about a proposed Settlement of this class action lawsuit and about options, before the Court decides whether to give final approval to the Settlement. The website and the Notice you were sent explain the lawsuit, the Settlement, and your legal rights. 
 The case is called Patino v. Film at Lincoln Center, Inc., Index No. 504682/2024, pending in the Supreme Court of the State of New York, County of Kings. The person who sued is called the Plaintiff. The Defendant is Film at Lincoln Center, Inc.
@@ -96,10 +117,8 @@ These FAQs summarize the Settlement. More details are in the Settlement Agreemen
         ";
 
 
-
-
         // Sample from CA40070001 Tan v Quick Box
-        public static string Sample_TanVQuickBox = @"
+        public static string TanVQuickBox = @"
 
            1. Why should I read this website?
            If you were billed for La Pura Products between June 20, 2016 and September 9, 2024, you are a member of a Settlement Class.

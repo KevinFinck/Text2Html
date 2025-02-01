@@ -7,65 +7,38 @@ namespace Text2Html
     {
         public class HtmlResults
         {
-            public string TheList { get; set; }
-            public string TextSection { get; set; }
+            public string? TheList { get; set; }
+            public string? TextSection { get; set; }
         }
 
-        public static HtmlResults ParseList(string textToProcess)
-        {
-            var html = ConvertToHtml(textToProcess);
-            return html;
-            //model.TextToOutput = $"{html.TheList}{Environment.NewLine}{Environment.NewLine}{html.TextSection}";
+// Input Parser
+// Open Reader
+// List<faq> = SectionParser(reader)
 
-            //OutputText = model.TextToOutput;
+// Section parser:
+        // in: Reader
+        // Faq num
+        // Faq title
+        // Faq paragraphs
 
-            //ViewData["JavaScript"] = "window.location = '" + Url.Page("Index") + "'";
-        }
+// Line parser
 
-
-
-        public static HtmlResults ConvertToHtml(string? input)
+        public static HtmlResults? ConvertToHtml(string? input)
         {
             if (string.IsNullOrEmpty(input)) return null;
 
             var theList = new StringBuilder();
             var theTextSections = new StringBuilder();
 
-            using (var reader = new StringReader(input))
+            var reader = new StringReader(input);
+            var faqs = FaqParser(reader);
+
+            foreach (var faq in faqs)
             {
-                var line = string.Empty;
-                do
-                {
-                    line = reader.ReadLine();
-                    if (string.IsNullOrWhiteSpace(line)) continue;
-
-                    var periodPos = line.IndexOf(".");
-                    if (periodPos >= 0)
-                    {
-                        var lineNumber = line.Substring(0, periodPos);
-                        var theRest = line
-                            .Substring(periodPos + 1)
-                            .Trim();
-
-                        var formatted = $"<li><a href=\"#faq{lineNumber}\">{theRest}</a></li>";
-                        theList.AppendLine(formatted);
-
-
-                        formatted = $@"   
-        <li class=""Answer"">
-            <a name=""faq{lineNumber}""></a>{theRest}
-            <p></p>
-
-            <a href=""#Top"">Back To Top</a>
-        </li>";
-                        theTextSections.AppendLine(formatted);
-                    }
-
-                } while (line != null);
+                theList.AppendLine(faq.Title);
+                theTextSections.AppendLine(string.Join("<br/>", faq.Paragraphs));
             }
-
-            var out1 = theList.ToString();
-            var out2 = theTextSections.ToString();
+            
             var htmlResults = new HtmlResults
             {
                 TheList = theList.ToString(),
@@ -75,8 +48,65 @@ namespace Text2Html
             return htmlResults;
         }
 
+        public static IEnumerable<Faq> FaqParser(StringReader reader)
+        {
+            var faqs = new List<Faq>();
+            
+            Faq? faq = null;
+            var line = string.Empty;
+            do
+            {
+                line = reader.ReadLine();
+                if (string.IsNullOrWhiteSpace(line)) 
+                    continue;
 
-        public static string ParagraphParser()
+                int? faqNumber = null;
+
+                var separator = line.IndexOf('.');
+                if (separator < 0) separator = line.IndexOf(')');
+                if (separator >= 0)
+                {
+                    var numString = line.Substring(0, separator);
+                    if (int.TryParse(numString, out var parsedNum))
+                        faqNumber = parsedNum;
+                }
+                
+                if (faqNumber.HasValue)
+                {
+                    if (faq != null) faqs.Add(faq);
+                    faq = new Faq
+                    {
+                        FaqNumber = faqNumber
+                    };
+                    if (line.Length > separator + 1)
+                    {
+                        var titleText = line
+                            .Substring(separator + 1)
+                            .Trim();
+                        faq.Title = $"<li><a href=\"#faq{faq.FaqNumber}\">{titleText}</a></li>";
+                    }
+                    
+                    var formatted = $@"   
+        <li class=""Answer"">
+            <a name=""faq{faq.FaqNumber}""></a>{faq.Title}
+            <p></p>
+
+            <a href=""#Top"">Back To Top</a>
+        </li>";
+                    faq.Paragraphs.Add(formatted);
+                }
+                else
+                {
+                    faq.Paragraphs.Add(line);
+                }
+            } while (line != null);
+            if (faq != null) 
+                faqs.Add(faq);
+            
+            return faqs;
+        }
+
+    public static string ParagraphParser()
         {
             var input = @"
 Class Counsel have not been paid for their work in this case. In addition to thousands of hours of labor spent on this case, Class Counsel have expended substantial expenses prosecuting this case. The Court will determine how much Class Counsel will be paid for fees and expenses. Class Counsel will seek an award for attorneys’ fees of up to one-third of the Settlement Fund, plus reimbursement of Class Counsel’s costs and expenses (no more than $200,000), also to be paid from the Settlement Fund. You will not be responsible for payment of Class Counsel’s fees and expenses. 
