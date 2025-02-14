@@ -4,5 +4,6 @@ public class Faq
 {
     public int? FaqNumber { get; set; }
     public string? Title { get; set; }
-    public List<string?> Paragraphs { get; set; } = new List<string?>();
+    public string? FormattedTitle { get; set; }
+    public List<string?> FormattedParagraphs { get; set; } = new List<string?>();
 }

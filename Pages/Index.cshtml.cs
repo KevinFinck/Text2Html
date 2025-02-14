@@ -85,7 +85,7 @@ namespace Text2Html.Pages
             var toHtml = results.TheList.Replace(Environment.NewLine, $"<br />{Environment.NewLine}");
 
             ParsedFaqList = results.TheList.ConvertLineFeeds();
-            ParsedFaqText = results.TextSection.ConvertLineFeeds();
+            ParsedFaqText = results.TextSection; //.ConvertLineFeeds();
             ViewData["FormattedResult"] = ParsedFaqList;    // TODO: remove?
 
             return Page();

@@ -35,8 +35,8 @@ namespace Text2Html
 
             foreach (var faq in faqs)
             {
-                theList.AppendLine(faq.Title);
-                theTextSections.AppendLine(string.Join("<br/>", faq.Paragraphs));
+                theList.AppendLine(faq.FormattedTitle);
+                theTextSections.AppendLine(string.Join("<br/>", faq.FormattedParagraphs));
             }
             
             var htmlResults = new HtmlResults
@@ -80,10 +80,10 @@ namespace Text2Html
                     };
                     if (line.Length > separator + 1)
                     {
-                        var titleText = line
+                        faq.Title = line
                             .Substring(separator + 1)
                             .Trim();
-                        faq.Title = $"<li><a href=\"#faq{faq.FaqNumber}\">{titleText}</a></li>";
+                        faq.FormattedTitle = $"<li><a href=\"#faq{faq.FaqNumber}\">{faq.Title}</a></li>";
                     }
                     
                     var formatted = $@"   
@@ -93,11 +93,11 @@ namespace Text2Html
 
             <a href=""#Top"">Back To Top</a>
         </li>";
-                    faq.Paragraphs.Add(formatted);
+                    faq.FormattedParagraphs.Add(formatted);
                 }
                 else
                 {
-                    faq.Paragraphs.Add(line);
+                    faq.FormattedParagraphs.Add(line);
                 }
             } while (line != null);
             if (faq != null) 
