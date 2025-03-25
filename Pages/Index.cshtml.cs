@@ -8,9 +8,7 @@ namespace Text2Html.Pages
 {
     public class ParserModel : PageModel
     {
-        //public string DefaultText { get; set; } = TestData.SimpleList;
-        public string DefaultText { get; set; } = TestData.JointListAndText;
-
+        public string DefaultText { get; set; } //= TestData.JointListAndText;
 
 
         private readonly ILogger<ParserModel> _logger;
@@ -82,11 +80,8 @@ namespace Text2Html.Pages
                 return Page();
             }
 
-            var toHtml = results.TheList.Replace(Environment.NewLine, $"<br />{Environment.NewLine}");
-
-            ParsedFaqList = results.TheList.ConvertLineFeeds();
+            ParsedFaqList = results.TheList;
             ParsedFaqText = results.TextSection; //.ConvertLineFeeds();
-            ViewData["FormattedResult"] = ParsedFaqList;    // TODO: remove?
 
             return Page();
         }
