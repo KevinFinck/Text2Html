@@ -97,6 +97,7 @@ namespace Text2Html
                 }
                 else
                 {
+                    if (faq == null) faq = new Faq();
                     faq.FormattedParagraphs.Add(line);
                 }
             } while (line != null);
